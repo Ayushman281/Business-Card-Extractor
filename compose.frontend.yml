@@ -1,0 +1,20 @@
+# Frontend-only cloud deployment; Docker/builds execute on AWS, never the PC.
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-}
+      API_PROXY_URL: ${API_PROXY_URL:-http://127.0.0.1:8000}
+    ports:
+      - "${HTTP_BIND:-127.0.0.1}:${HTTP_PORT:-8080}:80"
+    restart: unless-stopped
+    mem_limit: 256m
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

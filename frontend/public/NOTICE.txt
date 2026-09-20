@@ -1,0 +1,12 @@
+Application source and model materials have separate licenses.
+
+The default checkpoint is Qwen/Qwen2.5-VL-3B-Instruct.
+Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT,
+Copyright (c) Alibaba Cloud. All Rights Reserved.
+
+Official model license:
+https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct/blob/main/LICENSE
+
+Model weights are not distributed in this repository. They are downloaded
+from the official model repository on the AWS server after explicit enablement.
+Other third-party dependencies retain their own licenses.
