@@ -194,14 +194,13 @@ exercised the application in hosted GPU environments, reviewed the generated
 code, and developed a working understanding of the system and its tradeoffs. I
 accept responsibility for the submitted implementation.
 
-Significant AI recommendations adopted include one model per API process,
-sequential card inference, asynchronous job polling, strict image/model-output
-validation, short-lived in-memory results, and a portable environment-based
-deployment design. The original plan for local backend/model testing was rejected
-because of development-machine resource constraints. The AWS-first deployment
-plan was revised to support Lightning AI through configuration and shared hosting
-scripts, while retaining AWS as an alternative. I modified the backend hosting
-code and scripts during this process.
+ChatGPT recommended one model per API process, sequential card inference,
+asynchronous job polling, strict image/model-output validation, short-lived
+in-memory results, and environment-based deployment configuration. I reviewed and
+adopted those recommendations. I rejected ChatGPT's proposed local model-testing
+steps because of my development-machine constraints, and I modified its early
+AWS-first and Lightning patching recommendations into one configuration-driven
+deployment design. I also manually corrected the backend hosting code and scripts.
 
 A longer decision record is available in [AI_USAGE.md](AI_USAGE.md).
 

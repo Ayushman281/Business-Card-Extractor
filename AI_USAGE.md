@@ -7,6 +7,10 @@ performed with the **Astra 6** and **GPT-5.6 Sol** language models within ChatGP
 No use of Claude, Cursor, GitHub Copilot, or another code-generation tool is
 claimed for this submission.
 
+Both models were used across multiple development iterations. I did not maintain
+a model-by-model attribution log, so the recommendations below are attributed to
+ChatGPT rather than assigning individual suggestions to Astra 6 or GPT-5.6 Sol.
+
 ## Extent of AI assistance
 
 I estimate that approximately **80% of the submitted code was AI-generated or
@@ -47,31 +51,38 @@ and limitations.
 
 ## Recommendations adopted
 
-The following AI recommendations were adopted after review:
+ChatGPT, through Astra 6 and GPT-5.6 Sol, proposed the following recommendations.
+I reviewed them, understood their tradeoffs, and adopted them in the project:
 
-- use a pretrained Qwen vision-language model without training or fine-tuning;
-- initialize one model per API process and run one Uvicorn worker;
-- process cards sequentially to stay within a 16 GB GPU memory budget;
-- return HTTP 202 jobs and let the UI poll real progress;
-- validate file size, decoded pixels, actual image format, EXIF orientation, and
-  model-generated JSON before presenting a lead;
-- keep failed cards independent so one bad image does not discard the batch;
-- write all exported spreadsheet values as strings;
-- keep uploads and results transient, with bounded result retention;
-- keep model inference disabled by default and require an explicit cloud target;
-- configure provider-specific URLs, CORS, cache locations, and ports through the
-  environment instead of hardcoding them in application source; and
-- retain a shared implementation that can move from Lightning AI to AWS with
-  minimal configuration changes.
+- use the pretrained Qwen vision-language model without training or fine-tuning;
+- load one model per API process and use one Uvicorn worker to avoid duplicate
+  model copies in GPU memory;
+- process cards sequentially to fit the intended 16 GB GPU environment;
+- use asynchronous HTTP 202 jobs so the React interface can poll and display
+  extraction progress;
+- validate uploaded images and model-generated JSON before presenting a lead;
+- isolate failures by card so one invalid image does not discard the whole batch;
+- write spreadsheet values as strings to preserve phone numbers and prevent
+  formula-like values from being interpreted by Excel;
+- retain uploads and results only temporarily rather than introducing a database
+  for this demonstration;
+- disable model inference by default and require an explicit hosted-cloud target;
+  and
+- use environment-based URLs, CORS, cache paths, and ports so the same application
+  can run on Lightning AI or AWS without provider-specific source changes.
 
 ## Recommendations rejected or modified
 
-The development plan was changed in the following ways:
+I rejected or modified the following ChatGPT-generated recommendations after
+reviewing them against the available hardware and deployment requirements:
 
-- Local CPU/model execution was rejected because the development machine did
-  not have sufficient resources and the user explicitly prohibited local model
-  execution.
-- An initial AWS-only design was generalized after Lightning AI became the
-  chosen deployment environment; AWS remains supported through configuration.
-- A patch-at-deployment Lightning approach was replaced with native multi-cloud
-  configuration to reduce future AWS migration work.
+- ChatGPT initially included local backend and model verification steps. I
+  rejected those steps because my development computer did not have sufficient
+  GPU, RAM, or CPU resources, and I chose to run the pretrained model only in
+  hosted GPU environments.
+- An early ChatGPT-generated deployment design treated AWS as the primary target.
+  I modified it to use Lightning AI for the working deployment while retaining an
+  AWS path through environment configuration.
+- ChatGPT initially proposed applying Lightning-specific patches during
+  deployment. I replaced that approach with shared configuration and hosting
+  scripts so future AWS deployment does not require rewriting application code.
