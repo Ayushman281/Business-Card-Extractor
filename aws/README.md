@@ -8,6 +8,21 @@ AWS deployment is an alternative to the current Lightning AI demo. It uses the
 same source and model implementation. Migration requires environment and
 infrastructure changes, not Python or React rewrites.
 
+## Deployment status
+
+I have not deployed this project on AWS. AWS offers GPU EC2 instances such as
+[`g4dn.xlarge`](https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html),
+which includes an NVIDIA T4 GPU with 16 GiB of VRAM, but these GPU instances are
+not included in the standard [EC2 Free Tier instance list](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html).
+Running the application on AWS would therefore consume account credits or incur
+usage charges.
+
+I deployed the complete frontend and backend on Lightning AI instead. At the time
+of deployment, my Lightning AI account included up to 80 hours of free T4 GPU
+usage with 16 GB of VRAM. This document describes the supported AWS deployment
+path for future use; it does not claim that this project was deployed or tested on
+AWS.
+
 ## Architecture on AWS
 
 ```mermaid
@@ -213,7 +228,7 @@ curl -fsS http://127.0.0.1:8080/api/ready
 Readiness returns 503 during model loading. Wait for:
 
 ```json
-{"ready":true}
+{ "ready": true }
 ```
 
 Only one backend worker is configured. Do not start a separate proof-of-concept
@@ -294,17 +309,17 @@ that cache and forces a new model download, so use it only for intentional clean
 
 ## Troubleshooting
 
-| Symptom | Resolution |
-|---|---|
-| Model state is disabled | Check both `EXECUTION_TARGET=aws` and `ENABLE_MODEL_INFERENCE=true`, then recreate the backend. |
-| CUDA unavailable | Check host `nvidia-smi`, NVIDIA Container Toolkit, Docker runtime, and Compose GPU reservation. |
-| Download returns 401/403/404 | Verify the exact model ID/revision and outbound network access; do not silently change models. |
-| Cache permission failure | Inspect the `model-cache` volume ownership; the runtime user is UID/GID 10001. |
-| GPU out of memory | Stop competing GPU processes and ensure only one backend model instance is active. |
-| HTTP 429 | Another batch is active or Nginx rate-limited requests; wait before retrying. |
-| HTTP 413 | Reduce individual or total upload size. |
-| Public page unreachable | Check the EC2 public address, security group, `HTTP_BIND`, container state, and port conflicts. |
-| Job returns 404 | The result expired or the backend restarted; upload again. |
+| Symptom                      | Resolution                                                                                      |
+| ---------------------------- | ----------------------------------------------------------------------------------------------- |
+| Model state is disabled      | Check both `EXECUTION_TARGET=aws` and `ENABLE_MODEL_INFERENCE=true`, then recreate the backend. |
+| CUDA unavailable             | Check host `nvidia-smi`, NVIDIA Container Toolkit, Docker runtime, and Compose GPU reservation. |
+| Download returns 401/403/404 | Verify the exact model ID/revision and outbound network access; do not silently change models.  |
+| Cache permission failure     | Inspect the `model-cache` volume ownership; the runtime user is UID/GID 10001.                  |
+| GPU out of memory            | Stop competing GPU processes and ensure only one backend model instance is active.              |
+| HTTP 429                     | Another batch is active or Nginx rate-limited requests; wait before retrying.                   |
+| HTTP 413                     | Reduce individual or total upload size.                                                         |
+| Public page unreachable      | Check the EC2 public address, security group, `HTTP_BIND`, container state, and port conflicts. |
+| Job returns 404              | The result expired or the backend restarted; upload again.                                      |
 
 ## Shutdown and cleanup
 
