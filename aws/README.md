@@ -234,7 +234,7 @@ fails independently, edited values appear in the XLSX, and the workbook structur
 is valid. Open the workbook and manually review every field; automated structure
 checks do not establish extraction accuracy.
 
-Record operational evidence:
+Check resource usage:
 
 ```bash
 nvidia-smi
@@ -314,6 +314,5 @@ over, terminate unused instances and inspect every region for retained EBS
 volumes, snapshots, Elastic IPs, and other resources. Review Billing/Cost Explorer
 after cleanup.
 
-For a more detailed infrastructure checklist, see
-[docs/aws-deployment.md](../docs/aws-deployment.md) and
-[docs/acceptance.md](../docs/acceptance.md).
+For implementation details and design tradeoffs, see
+[the architecture document](../docs/architecture.md).

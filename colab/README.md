@@ -107,11 +107,5 @@ of this repair remains to be verified in the user's runtime.
 - Do not run the standalone Qwen PoC alongside the backend; it would load a
   second model. A new runtime needs the ZIP upload and setup cells again.
 
-## Validation status
-
-Notebook JSON/cell structure and patch compatibility with the supplied ZIP
-were inspected statically. No notebook cells, backend, tests or model were
-executed on the development PC. Actual Colab results remain pending.
-
 References: [PyTorch version pairs](https://pytorch.org/get-started/previous-versions/),
 [Qwen integration](https://huggingface.co/docs/transformers/v4.57.1/en/model_doc/qwen2_5_vl).

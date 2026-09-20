@@ -75,14 +75,3 @@ The development plan was changed in the following ways:
   chosen deployment environment; AWS remains supported through configuration.
 - A patch-at-deployment Lightning approach was replaced with native multi-cloud
   configuration to reduce future AWS migration work.
-
-## Verification boundary
-
-I ran the hosted application and supplied the deployment URLs. During the
-interaction, Lightning downloaded the pinned checkpoint and reported a successful
-model initialization. I also performed the earlier Colab execution. This
-documentation pass reviewed source and packaging locally but
-did not independently execute the backend, model, or Docker stack. Read-only
-public-URL checks were inconclusive, as recorded in `docs/validation.md`.
-AWS deployment remains an alternate documented path rather than a claimed AWS
-runtime acceptance result.

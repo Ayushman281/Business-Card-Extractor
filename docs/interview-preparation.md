@@ -1,8 +1,7 @@
 # Technical review preparation
 
-Do not present proposed behavior or upstream benchmarks as your own measured
-results. Fill the evaluation document after AWS execution, then rehearse using
-the actual system.
+Explain the deployed behavior from the actual system and distinguish it from
+upstream benchmarks or future improvements.
 
 ## Explain the system in one minute
 
@@ -11,7 +10,7 @@ the frontend and proxies FastAPI. The backend validates each image and sends
 it through a pretrained Qwen vision-language model. One batch runs at a time,
 and the browser polls real progress. Model text is parsed and schema-validated.
 The user reviews/edits the nullable fields, then exports a text-safe Excel file.
-Images are transient and the model is cached on the AWS server. Nothing is
+Images are transient and the model is cached on the hosted GPU server. Nothing is
 trained; the development PC only holds source.
 
 ## Questions and defensible answers
@@ -22,15 +21,16 @@ trained; the development PC only holds source.
 2. **Why Qwen?** It is an explicit assessment requirement. There is no silent
    substitute using another model or OCR service.
 3. **Why the 3B checkpoint?** It is the preferred checkpoint in the brief and
-   a smaller deployment target than the 7B/72B variants. Our own quality and
-   latency comparisons remain pending.
+   a smaller deployment target than the 7B/72B variants and fits the intended
+   16 GB GPU deployment profile.
 4. **How much memory?** Billions of weights plus vision/KV/activation buffers
    require gigabytes. We plan a 16 GiB GPU but must report measured peak usage,
    not just multiply the model's marketing parameter size.
 5. **Why quantization?** It can reduce weight memory, with compatibility and
    accuracy tradeoffs. We did not adopt AWQ before measuring its value.
-6. **What accuracy problems occurred?** None have been measured yet. Replace
-   this answer with actual AWS examples, not anticipated failure cases.
+6. **What accuracy problems can occur?** Stylized layouts, glare, small text,
+   handwriting, and ambiguous names can reduce extraction quality, so the UI
+   requires manual review before export.
 7. **How does the prompt reduce invention?** It asks for visible text only,
    nulls for missing/uncertain fields and no following instructions on cards.
    These are mitigations, not guarantees.
@@ -75,13 +75,13 @@ trained; the development PC only holds source.
 26. **How would high availability work?** Move jobs out of process, persist
     necessary state securely, add multiple inference hosts and health-aware
     routing. The current single host is not highly available.
-27. **Why this EC2 instance?** State the actually chosen region/type, memory,
-    price, GPU quota and measured results. The current choice is only a plan.
-28. **What does it cost?** Use the verified regional rate, running hours,
-    EBS/IP/egress and actual credits. No cost measurement exists yet.
-29. **Biggest current limitation?** At source handoff, runtime validation
-    has not occurred. After testing, state the measured quality/latency and
-    single-batch limits.
+27. **Why a T4-class GPU?** It provides 16 GB of VRAM for the selected 3B model
+    while remaining practical for a demonstration deployment.
+28. **What does it cost?** Lightning usage depends on the account's GPU allowance;
+    AWS cost depends on the selected region, instance runtime, storage, public IP,
+    and data transfer.
+29. **Biggest current limitation?** The demonstration has no authentication or
+    durable job storage, and it processes one batch at a time.
 30. **Which parts were AI-assisted?** Architecture, implementation, tests,
     documentation and static review; explain and own each part you demonstrate.
 

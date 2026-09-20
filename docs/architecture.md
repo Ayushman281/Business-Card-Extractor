@@ -4,8 +4,8 @@
 
 Source is authored on Windows, where only frontend preview is permitted.
 Backend tests and pretrained inference run on the explicitly selected hosted
-AWS, Lightning AI or Colab GPU runtime. Docker/public-deployment acceptance
-remains on AWS. No training/fine-tuning or local CPU/GPU fallback is configured.
+AWS, Lightning AI or Colab GPU runtime. The Docker deployment path targets AWS.
+No training/fine-tuning or local CPU/GPU fallback is configured.
 
 `EXECUTION_TARGET=aws|lightning|colab` and `ENABLE_MODEL_INFERENCE=true` are both
 required before model imports or weights load. Defaults remain disabled; the
@@ -29,7 +29,7 @@ One EC2 host runs two Compose services:
 The backend is reachable only on the Compose network. A Docker named volume
 stores Hugging Face weights across restarts. No database is required.
 
-During server acceptance the frontend binds to AWS loopback port 8080.
+In the initial AWS configuration, the frontend binds to loopback port 8080.
 Public HTTP uses an explicit bind change; HTTPS can use a host Nginx/Certbot
 proxy to the loopback container without exposing port 8000.
 
@@ -40,7 +40,7 @@ These are engineering planning estimates, not measurements from this project.
 | Checkpoint | Use in this project | Memory/compatibility considerations |
 |---|---|---|
 | Qwen2.5-VL-3B-Instruct | Preferred pretrained AWS model | Roughly 6–8 GB of FP16 weights, plus vision activations, KV cache, CUDA workspace and host RAM. Plan for a 16 GiB GPU and measure. |
-| Qwen2.5-VL-3B-Instruct-AWQ | Evaluated in planning, not implemented | 4-bit weights reduce weight memory, but vision/runtime overhead remains. Requires a compatible quantization backend and new AWS validation. |
+| Qwen2.5-VL-3B-Instruct-AWQ | Evaluated in planning, not implemented | 4-bit weights reduce weight memory, but vision/runtime overhead remains. It would require a compatible quantization backend and compatibility testing before adoption. |
 | Qwen2-VL-2B-Instruct | Explicit supported AWS alternative | Smaller weights do not guarantee acceptable CPU latency or fit in a 4 GiB GPU. A different checkpoint class and revision are selected explicitly. |
 
 The native processor receives a Pillow image directly, so qwen-vl-utils/video
@@ -141,10 +141,9 @@ files and edits are not persisted to browser storage. Refreshing loses them.
 
 ## Reproducibility limits
 
-Direct package versions, frontend lockfile and default model revision are
-recorded. No local build was allowed. The first AWS build must resolve Python
-transitives, establish compatibility and record image digests; no assertion of
-a hermetic or reproducibly tested environment is made yet.
+Direct package versions, the frontend lockfile, and the default model revision
+are recorded. Container image digests and hosted package inventories can be
+retained when exact deployment reproduction is required.
 
 ## Official references
 

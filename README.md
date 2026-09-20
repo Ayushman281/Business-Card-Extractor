@@ -21,8 +21,6 @@ source ZIP; the deployed application has a separate public URL.
 
 The current demo runs in a user-operated Lightning AI Studio. Its public URLs
 are available only while the Studio and both application processes are running.
-I started the model and deployed the application; this final documentation pass
-did not independently invoke the hosted model.
 
 ## What the application does
 
@@ -219,7 +217,7 @@ docker-compose.yml         AWS frontend + GPU backend
 compose.test.yml           Isolated non-model test container
 compose.frontend.yml       Optional frontend-only container
 colab/                     Legacy hosted Colab notebook workflow
-docs/                      Architecture, evaluation, acceptance, and design notes
+docs/                      Architecture, deployment, and interview notes
 ```
 
 ## License

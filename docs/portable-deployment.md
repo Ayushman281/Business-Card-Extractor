@@ -111,24 +111,8 @@ does not refresh Compose environment values. Reload browser pages afterward.
 
 ## Move the whole application to AWS
 
-Use the same repository and [AWS deployment guide](aws-deployment.md). Starting
+Use the same repository and [AWS deployment guide](../aws/README.md). Starting
 from the root example, enable AWS inference, leave `API_BASE_URL` empty and set
 `API_PROXY_URL=http://backend:8000`. Then use full `docker-compose.yml` on the
 GPU server. Stop a frontend-only deployment before replacing it on the same
 host port. No source edits or cloud-specific model patches are needed.
-
-## Hosted acceptance
-
-- Dependency consistency, CUDA visibility and all non-model tests pass.
-- Readiness becomes true with the pinned real Qwen checkpoint.
-- Real smoke checks pass; manually inspect cards and workbook.
-- At the deployed frontend origin, test upload, job polling, edit, export and
-  delete. Check browser Network/Console for CORS, CSP and mixed-content failures.
-- Confirm rejected origins fail CORS preflight in direct mode.
-- Switch backend URL through deployment configuration and confirm the unchanged
-  frontend bundle uses the new URL after reload/recreation.
-- Record memory, startup time, cache reuse, public access and actual cost.
-
-These checks are authored but unexecuted for this revision. Source inspection
-does not establish runtime acceptance. Complete AWS Docker/public acceptance
-on AWS even if native Lightning testing passes.

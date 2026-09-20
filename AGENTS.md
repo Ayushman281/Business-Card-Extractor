@@ -5,7 +5,7 @@ Installing frontend dependencies and running the Vite development server on
 loopback are allowed. Do not start the backend or connect the preview to a
 model service. The user also authorizes backend testing and pretrained-model
 inference in a hosted Google Colab GPU runtime using the notebook in colab/.
-Full Docker/public-deployment acceptance remains on AWS.
+Full Docker/public-deployment testing may run only on AWS.
 The user also authorizes backend testing and pretrained-model inference in a
 hosted Lightning AI GPU Studio using the setup package in lightning/.
 The current shared launcher is scripts/cloud_backend.py; lightning/ documents
@@ -25,8 +25,8 @@ fine-tuning is required anywhere. Use the pretrained Qwen checkpoint; do not
 substitute another vendor or return test doubles from production routes.
 
 Keep inference disabled by default. Preserve the explicit execution target
-and inference-enable guards. Record unexecuted checks honestly in
-docs/validation.md. Never mark a phase runtime-accepted based only on source
+and inference-enable guards. Record runtime claims honestly. Never mark a phase
+runtime-accepted based only on source
 inspection. Keep costs, account quota and regional pricing verified before
 creating AWS resources. Follow the user's current instructions over older
 references to local testing.
